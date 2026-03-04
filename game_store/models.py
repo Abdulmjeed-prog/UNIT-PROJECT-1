@@ -22,10 +22,20 @@ class Game:
         self.release_year = release_year
     
     def display_games(games):
-       
-        for num, id in enumerate(games, start=1):
-            game = games[id]
-            print(game)
+        """Display all games from dict"""
+        if not games:
+            print("No games available.")
+            return
+    
+        print("\n📋 AVAILABLE GAMES:")
+        print("=" * 70)
+        for num, game_id in enumerate(games, start=1):
+            game = games[game_id]
+            print(f"{num}. {game['title']} (ID: {game_id})")
+            print(f"   {game['genre']} | ${game['price']:,.2f} | Stock: {game['stock']}")
+            print(f"   {game['publisher']} - {game['release_year']}")
+            print("-" * 70)
+
     
 
     def save_game(games):
@@ -57,7 +67,7 @@ class Game:
 
 
 class User:
-    def __init__(self, username: str, email: str, password: str):
+    def __init__(self, username: str, email: str, password: str, b):
         self.username = username.lower()  # "Kg" → "kg" (case insensitive)
         self.email = email
         self.password = password
