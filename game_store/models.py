@@ -1,17 +1,13 @@
 from dataclasses import dataclass ,field
 import json
 import os
-import random
+
 users = {
-    212121: {
-        "username": "AhmedXd", "email": "Abdulmjeed@gmail.com"
-    }
+    
 }
 
 games = {
-    212121: {
-        "DarkSouls","PS5","Souls",2151,5,"FromSoftware",2018
-    }
+    
 }
 
 class Game: 
@@ -24,22 +20,99 @@ class Game:
         self.stock = stock
         self.publisher = publisher
         self.release_year = release_year
+    
+    def display_games(games):
+       
+        for num, id in enumerate(games, start=1):
+            game = games[id]
+            print(game)
+    
+
+    def save_game(games):
+        """Save to JSON file."""
+        games[212412] = {  # Username as key!
+            "title": "bomba",
+            "genre": "horror",
+            "price": 200,
+            "stock": 8,
+            "publisher": "fromSoftware",
+            "release_year": "2018"
+        }
+        with open('games.json', 'w', encoding='utf-8') as f:
+            json.dump(games, f, indent=2)
+
+    def load_library(games):
+        """Load from JSON file."""
+    if os.path.exists('games.json'):
+        try:
+            with open('games.json', 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                games.clear()
+                games.update(data)
+            
+        except:
+            pass
+    load_library(users)
+
 
 
 class User:
-    def __init__(self, username:str, email:str):
-        self.id = random.randint(1, 10)
-        self.username = username
+    def __init__(self, username: str, email: str, password: str):
+        self.username = username.lower()  # "Kg" → "kg" (case insensitive)
         self.email = email
+        self.password = password
+    
+   
         
     def add_account(self):
-        users[self.id] = {
+        users[self.username] = {  # Username as key!
             "username": self.username,
-            "email": self.email
+            "email": self.email,
+            "password": self.password
         }
+        print(f"✅ Account created! Login with: {self.username}")
+
+    @staticmethod
+    def login(username: str, password: str) -> 'User|None':
+        username = username.lower().strip()  # Normalize input
+        
+        if username not in users:
+            print("❌ User not found. Register first.")
+            return None
+        
+        user_data = users[username]
+        
+        if password == user_data["password"]:
+            print(f"✅ Welcome back, {username.title()}!")
+            return User(
+                username=username,
+                email=user_data["email"],
+                password=password
+            )
+        else:
+            print("❌ Wrong password")
+            return None
     
-    def save_library(users):
+        
+
+    
+    
+    def save_user(users):
         """Save to JSON file."""
-        with open('library.json', 'w', encoding='utf-8') as f:
+        with open('users.json', 'w', encoding='utf-8') as f:
             json.dump(users, f, indent=2)
+
+    def load_library(users):
+        """Load from JSON file."""
+    if os.path.exists('users.json'):
+        try:
+            with open('users.json', 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                users.clear()
+                users.update(data)
+            
+        except:
+            pass
+    load_library(users)
+
 
