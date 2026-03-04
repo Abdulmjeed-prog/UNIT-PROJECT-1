@@ -9,6 +9,30 @@ users = {
 games = {
     
 }
+gift_cards = {
+    "ABCD-EFGH-IJKL-MNOP": {  # 20 chars + dashes (exact PSN format)
+        "amount": 100.0,
+        "currency": "SAR",
+        "is_used": False,
+        "assigned_to": None,
+        "code": "ABCD-EFGH-IJKL-MNOP"
+    },
+    "WXYZ-1234-5678-9ABC": {
+        "amount": 50.0, 
+        "currency": "SAR",
+        "is_used": False,
+        "assigned_to": None,
+        "code": "WXYZ-1234-5678-9ABC"
+    },
+    "PSN4-QRST-UVWX-YZ12": {
+        "amount": 200.0,
+        "currency": "SAR", 
+        "is_used": False,
+        "assigned_to": None,
+        "code": "PSN4-QRST-UVWX-YZ12"
+    }
+}
+
 
 class Game: 
     def __init__(self, id: int, title: str, genre: str, price: float, stock: int, 
@@ -67,10 +91,11 @@ class Game:
 
 
 class User:
-    def __init__(self, username: str, email: str, password: str, b):
+    def __init__(self, username: str, email: str, password: str):
         self.username = username.lower()  # "Kg" → "kg" (case insensitive)
         self.email = email
         self.password = password
+        self.balance = 0.0
     
    
         
@@ -78,7 +103,8 @@ class User:
         users[self.username] = {  # Username as key!
             "username": self.username,
             "email": self.email,
-            "password": self.password
+            "password": self.password,
+            "balance": self.balance
         }
         print(f"✅ Account created! Login with: {self.username}")
 
@@ -103,7 +129,15 @@ class User:
             print("❌ Wrong password")
             return None
     
-        
+    def redeem_gift_card(gift_card, current_user):
+        if gift_card in gift_cards:
+            users[current_user.username]["balance"] += gift_cards[gift_card]["amount"]  # Fixed!
+            print(f"✅ Added {gift_cards[gift_card]['amount']} SAR to balance!")
+            gift_cards[gift_card]["is_used"] = True  # Mark as used
+            gift_cards[gift_card]["assigned_to"] = current_user.username
+        else:
+            print("❌ Invalid gift card")
+
 
     
     

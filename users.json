@@ -1,17 +1,8 @@
 {
-  "adsasd": {
-    "username": "adsasd",
-    "email": "asdas",
-    "password": "1231"
-  },
-  "abdulmjeed": {
-    "username": "abdulmjeed",
-    "email": "Abdulmjeed@gmail.com",
-    "password": "123"
-  },
-  "2132": {
-    "username": "2132",
-    "email": "dsadsd",
-    "password": "123124"
+  "asd": {
+    "username": "asd",
+    "email": "asd@gmail.com",
+    "password": "123",
+    "balance": 200.0
   }
 }

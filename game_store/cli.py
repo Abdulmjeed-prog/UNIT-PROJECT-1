@@ -14,7 +14,8 @@ def show_store_menu():
         print("3. View Cart") 
         print("4. Add to Cart")
         print("5. Checkout")
-        print("6. Logout")
+        print("6. Redeem gift card")
+        print("7. Logout")
         print("-"*40)
         
         try:
@@ -42,6 +43,10 @@ def show_store_menu():
             print("💳 Checkout...")
             pass
         elif choice == 6:
+            gift_card  = input("Please Enter Your gift Card: ")
+            models.User.redeem_gift_card(gift_card ,current_user)
+            models.User.save_user(models.users)
+        elif choice == 7:
             print("👋 Logging out...")
             break  # Returns to main menu
         else:
