@@ -2,7 +2,7 @@
   "asd": {
     "username": "asd",
     "email": "asd@gmail.com",
-    "password": "123",
-    "balance": 200.0
+    "password": "123456",
+    "balance": 0
   }
 }

@@ -9,6 +9,7 @@ users = {
 games = {
     
 }
+
 gift_cards = {
     "ABCD-EFGH-IJKL-MNOP": {  # 20 chars + dashes (exact PSN format)
         "amount": 100.0,
@@ -64,49 +65,63 @@ class Game:
 
     def save_game(games):
         """Save to JSON file."""
-        games[212412] = {  # Username as key!
-            "title": "bomba",
-            "genre": "horror",
-            "price": 200,
-            "stock": 8,
-            "publisher": "fromSoftware",
-            "release_year": "2018"
-        }
-        with open('games.json', 'w', encoding='utf-8') as f:
+        with open('data/games.json', 'w', encoding='utf-8') as f:
             json.dump(games, f, indent=2)
 
-    def load_library(games):
-        """Load from JSON file."""
-    if os.path.exists('games.json'):
-        try:
-            with open('games.json', 'r', encoding='utf-8') as f:
-                data = json.load(f)
-                games.clear()
-                games.update(data)
-            
-        except:
-            pass
-    load_library(users)
+    
 
 
 
 class User:
-    def __init__(self, username: str, email: str, password: str):
+    def __init__(self, username: str, email: str, password: str, balance:int = 0):
         self.username = username.lower()  # "Kg" → "kg" (case insensitive)
         self.email = email
         self.password = password
-        self.balance = 0.0
+        self.__balance = balance
+        self.cart = {}
     
-   
+    def set_balance(self, balance):
+        self.__balance = balance
+    
+    def get_balance(self):
+        return self.__balance
         
     def add_account(self):
-        users[self.username] = {  # Username as key!
+    # 1. Check if user already exists
+        if self.username in users:
+            print(f"❌ Username '{self.username}' already exists!")
+            return
+    
+    # 2. Username validation
+        if len(self.username) < 3:
+            print("❌ Username must be at least 3 characters!")
+            return
+        if not self.username.replace("_", "").replace("-", "").isalnum():
+            print("❌ Username can only contain letters, numbers, _, -")
+            return
+    
+    # 3. Email validation (basic)
+        if "@" not in self.email or "." not in self.email:
+            print("❌ Invalid email format!")
+            return
+    
+    # 4. Password validation
+        if len(self.password) < 6:
+            print("❌ Password must be at least 6 characters!")
+            return
+    
+    # 5. All good - create account
+        users[self.username] = {
             "username": self.username,
             "email": self.email,
-            "password": self.password,
-            "balance": self.balance
+            "password": self.password,  # In production: hash this!
+            "balance": 0
         }
-        print(f"✅ Account created! Login with: {self.username}")
+        
+        print(f"✅ Account created successfully!")
+        print(f"   Login with: {self.username}")
+        print(f"   Save your details safely!")
+
 
     @staticmethod
     def login(username: str, password: str) -> 'User|None':
@@ -123,7 +138,8 @@ class User:
             return User(
                 username=username,
                 email=user_data["email"],
-                password=password
+                password=password,
+                balance=user_data["balance"]
             )
         else:
             print("❌ Wrong password")
@@ -138,25 +154,89 @@ class User:
         else:
             print("❌ Invalid gift card")
 
+    def add_to_cart(current_user, game_id ):
+        if game_id not in games:
+            return "invalid ID"
 
+        game = games[game_id]
+
+        if game_id not in current_user.cart:
+            current_user.cart[game_id] = 1
+        else:
+            current_user.cart[game_id] += 1
+        
+        
+        print(current_user.cart)
+        print(f"✅ Added '{game['title']}' to your cart.")
+        print(f"   🛒 Cart now has {len(current_user.cart)} items")
+
+    def display_user_cart(current_user):
+        current_user.cart = load_user_cart(current_user.username)
+        print("\n🛒 YOUR CART")
+    
+        if not current_user.cart:
+            print("Cart is empty!")
+            return
+    
+        for game_id, quantity in current_user.cart.items():  # ← .items() FIX!
+            game = games[game_id]
+            print(f"{quantity}x {game['title']} (ID: {game_id})")
+            print(f"  Price: ${game['price']}")
+            print()
+
+            
     
     
     def save_user(users):
-        """Save to JSON file."""
-        with open('users.json', 'w', encoding='utf-8') as f:
+        os.makedirs("data", exist_ok=True)  # Creates folder if missing!
+        with open('data/users.json', 'w', encoding='utf-8') as f:
             json.dump(users, f, indent=2)
+    
+    def save_user_cart(cart,username):
+        """Save to JSON file."""
+        with open(f'data/{username}_cart.json', 'w', encoding='utf-8') as f:
+            json.dump(cart, f, indent=2)
 
-    def load_library(users):
-        """Load from JSON file."""
-    if os.path.exists('users.json'):
+
+
+@staticmethod
+def load_games():
+    global games
+    if os.path.exists('games.json'):
         try:
-            with open('users.json', 'r', encoding='utf-8') as f:
-                data = json.load(f)
+            with open('data/games.json', 'r') as f:
+                games.clear()
+                games.update(json.load(f))
+                print(f"✅ Loaded {len(games)} games")
+        except Exception as e:
+            print(f"❌ Load error: {e}")
+
+@staticmethod
+def load_users():
+    global users
+    if os.path.exists('data/users.json'):
+        try:
+            with open('data/users.json', 'r') as f:
                 users.clear()
-                users.update(data)
-            
-        except:
-            pass
-    load_library(users)
+                users.update(json.load(f))
+                print(f"✅ Loaded {len(users)} users")
+        except Exception as e:
+            print(f"❌ Load error: {e}")
+
+@staticmethod
+def load_user_cart(username: str) -> dict:
+    """Load user's cart from JSON"""
+    cart_file = f'{username}_cart.json'
+    if os.path.exists(cart_file):
+        try:
+            with open(cart_file, 'r', encoding='utf-8') as f:
+                cart = json.load(f)
+                print(f"✅ Loaded {len(cart)} cart items for {username}")
+                return cart
+        except Exception as e:
+            print(f"❌ Cart load error: {e}")
+    return {}  # Empty cart if no file
+
+
 
 
