@@ -1,0 +1,18 @@
+{
+  "212151": {
+    "title": "bloodborne",
+    "genre": "Souls",
+    "price": 200,
+    "stock": 8.0,
+    "publisher": "FromSoftware",
+    "release_year": 2018
+  },
+  "212122342": {
+    "title": "bloodborne",
+    "genre": "Souls",
+    "price": 100,
+    "stock": 8.0,
+    "publisher": "FromSoftware",
+    "release_year": 2018
+  }
+}

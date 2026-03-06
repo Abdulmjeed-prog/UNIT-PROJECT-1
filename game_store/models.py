@@ -146,8 +146,9 @@ class User:
             return None
     
     def redeem_gift_card(gift_card, current_user):
-        if gift_card in gift_cards:
+        if gift_card in gift_cards and not gift_cards[gift_card]["is_used"]:
             users[current_user.username]["balance"] += gift_cards[gift_card]["amount"]  # Fixed!
+            current_user.set_balance(current_user.get_balance() + gift_cards[gift_card]["amount"])
             print(f"✅ Added {gift_cards[gift_card]['amount']} SAR to balance!")
             gift_cards[gift_card]["is_used"] = True  # Mark as used
             gift_cards[gift_card]["assigned_to"] = current_user.username
@@ -177,16 +178,30 @@ class User:
         if not current_user.cart:
             print("Cart is empty!")
             return
-    
+        total = 0
         for game_id, quantity in current_user.cart.items():  # ← .items() FIX!
             game = games[game_id]
             print(f"{quantity}x {game['title']} (ID: {game_id})")
             print(f"  Price: ${game['price']}")
-            print()
+            total += int(game['price'])
+            print(f"\n💰 Total: {total} SAR")
+        return total
 
-            
-    
-    
+    def checkout(current_user, balance, total):
+        try:
+            if balance >= total:
+                users[current_user.username]["balance"] -= total
+                current_user.set_balance(current_user.get_balance() - total)
+                print("✅ Checkout complete!")
+                
+                # Clear cart after successful purchase
+                delete_cart_file(current_user.username)
+                
+                print("🎮 Games added to your library!")
+            else:
+                print("❌ Insufficient balance")
+        except:
+            pass
     def save_user(users):
         os.makedirs("data", exist_ok=True)  # Creates folder if missing!
         with open('data/users.json', 'w', encoding='utf-8') as f:
@@ -202,12 +217,11 @@ class User:
 @staticmethod
 def load_games():
     global games
-    if os.path.exists('games.json'):
+    if os.path.exists('data/games.json'):
         try:
             with open('data/games.json', 'r') as f:
                 games.clear()
                 games.update(json.load(f))
-                print(f"✅ Loaded {len(games)} games")
         except Exception as e:
             print(f"❌ Load error: {e}")
 
@@ -219,14 +233,13 @@ def load_users():
             with open('data/users.json', 'r') as f:
                 users.clear()
                 users.update(json.load(f))
-                print(f"✅ Loaded {len(users)} users")
         except Exception as e:
             print(f"❌ Load error: {e}")
 
 @staticmethod
 def load_user_cart(username: str) -> dict:
     """Load user's cart from JSON"""
-    cart_file = f'{username}_cart.json'
+    cart_file = f'data/{username}_cart.json'
     if os.path.exists(cart_file):
         try:
             with open(cart_file, 'r', encoding='utf-8') as f:
@@ -236,6 +249,16 @@ def load_user_cart(username: str) -> dict:
         except Exception as e:
             print(f"❌ Cart load error: {e}")
     return {}  # Empty cart if no file
+
+def delete_cart_file(username):
+    """Delete cart JSON file"""
+    cart_file = f'data/{username}_cart.json'
+    if os.path.exists(cart_file):
+        os.remove(cart_file)
+        print(f"🗑️ Deleted {cart_file}")
+    else:
+        print("📁 No cart file found")
+
 
 
 

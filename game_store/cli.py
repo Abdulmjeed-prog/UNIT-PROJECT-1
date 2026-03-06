@@ -8,8 +8,11 @@ print(models.users)
 print(models.games)
 
 def show_store_menu():
+    
     """Store menu for logged-in users"""
     while True:
+        models.load_users()
+        models.load_games()
         print("\n" + "="*40)
         print(f"🛒 STORE MENU            {models.User.get_balance(current_user)}")
         print("="*40)
@@ -31,17 +34,14 @@ def show_store_menu():
         if choice == 1:
             print("📋 Listing all games...")
             # models.list_games()
-            
             models.Game.display_games(models.games)
             
-            pass
         elif choice == 2:
             print("🔍 Search games...")
             pass
         elif choice == 3:
             print("🛒 Your cart...")
             models.User.display_user_cart(current_user)
-            pass
         elif choice == 4:
             print("➕ Add to cart...")
             models.Game.display_games(models.games)
@@ -49,10 +49,13 @@ def show_store_menu():
             models.User.add_to_cart(current_user, game_id)
             username = current_user.username
             models.User.save_user_cart(current_user.cart,username)
-            pass
         elif choice == 5:
             print("💳 Checkout...")
-            pass
+            cart_total = models.User.display_user_cart(current_user)
+            current_balance = current_user.get_balance()
+           
+            models.User.checkout(current_user, current_balance, cart_total)
+            models.User.save_user(models.users)  # save updated balance/cart            
         elif choice == 6:
             gift_card  = input("Please Enter Your gift Card: ")
             models.User.redeem_gift_card(gift_card ,current_user)
