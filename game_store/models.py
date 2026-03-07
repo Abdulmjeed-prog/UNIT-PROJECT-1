@@ -73,12 +73,13 @@ class Game:
 
 
 class User:
-    def __init__(self, username: str, email: str, password: str, balance:int = 0):
+    def __init__(self, username: str, email: str, password: str, balance:int = 0, cart=None, library=None):
         self.username = username.lower()  # "Kg" → "kg" (case insensitive)
         self.email = email
         self.password = password
         self.__balance = balance
-        self.cart = {}
+        self.cart = cart or {}
+        self.library = library or []
     
     def set_balance(self, balance):
         self.__balance = balance
@@ -115,7 +116,9 @@ class User:
             "username": self.username,
             "email": self.email,
             "password": self.password,  # In production: hash this!
-            "balance": 0
+            "balance": 0,
+            "cart": {},
+            "library": []
         }
         
         print(f"✅ Account created successfully!")
@@ -139,7 +142,10 @@ class User:
                 username=username,
                 email=user_data["email"],
                 password=password,
-                balance=user_data["balance"]
+                balance=user_data["balance"],
+                cart=user_data.get("cart", {}),      
+                library=user_data.get("library", [])
+
             )
         else:
             print("❌ Wrong password")
@@ -161,19 +167,15 @@ class User:
 
         game = games[game_id]
 
-        if game_id not in current_user.cart:
-            current_user.cart[game_id] = 1
-        else:
-            current_user.cart[game_id] += 1
-        
-        
+        if game_id in current_user.cart:
+            return print(f"game {games[game_id]["title"]} is already in the cart ")
+        current_user.cart[game_id] = 1
         print(current_user.cart)
         print(f"✅ Added '{game['title']}' to your cart.")
         print(f"   🛒 Cart now has {len(current_user.cart)} items")
 
     def display_user_cart(current_user):
         current_user.cart = load_user_cart(current_user.username)
-        print("\n🛒 YOUR CART")
     
         if not current_user.cart:
             print("Cart is empty!")
@@ -184,7 +186,7 @@ class User:
             print(f"{quantity}x {game['title']} (ID: {game_id})")
             print(f"  Price: ${game['price']}")
             total += int(game['price'])
-            print(f"\n💰 Total: {total} SAR")
+        print(f"\n💰 Total: {total} SAR")
         return total
 
     def checkout(current_user, balance, total):
@@ -194,14 +196,42 @@ class User:
                 current_user.set_balance(current_user.get_balance() - total)
                 print("✅ Checkout complete!")
                 
-                # Clear cart after successful purchase
+                # ADD GAMES TO LIBRARY (snapshots!)
+                users[current_user.username].setdefault("library", [])
+                current_user.library = current_user.library or []
+                
+                for game_id in current_user.cart:  # cart still has items
+                    game = games.get(game_id)
+                    if game:
+                        snapshot = {
+                            "game_id": game_id,
+                            "title": game["title"],
+                            "price": game["price"],
+                            "genre": game.get("genre", "Unknown")
+                        }
+                        
+                        # Avoid duplicates
+                        if not any(g["game_id"] == game_id for g in current_user.library):
+                            current_user.library.append(snapshot)
+                            users[current_user.username]["library"].append(snapshot)
+                            print(f"📚 Added: {game['title']}")
+                
+                # Clear cart AFTER adding to library
+                current_user.cart = {}
+                users[current_user.username]["cart"] = {}
                 delete_cart_file(current_user.username)
                 
+                # Save everything
+                User.save_user(users)
                 print("🎮 Games added to your library!")
+                
             else:
                 print("❌ Insufficient balance")
-        except:
-            pass
+        except Exception as e:
+            print(f"❌ Checkout error: {e}")
+
+
+        
     def save_user(users):
         os.makedirs("data", exist_ok=True)  # Creates folder if missing!
         with open('data/users.json', 'w', encoding='utf-8') as f:

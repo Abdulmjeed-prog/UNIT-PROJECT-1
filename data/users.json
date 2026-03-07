@@ -3,7 +3,21 @@
     "username": "asd",
     "email": "asd@gmail.com",
     "password": "123456",
-    "balance": 100.0,
-    "cart": {}
+    "balance": 200.0,
+    "cart": {},
+    "library": [
+      {
+        "game_id": "212151",
+        "title": "bloodborne",
+        "price": 200,
+        "genre": "Souls"
+      },
+      {
+        "game_id": "212122342",
+        "title": "bloodborne",
+        "price": 100,
+        "genre": "Souls"
+      }
+    ]
   }
 }
