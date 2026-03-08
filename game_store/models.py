@@ -3,6 +3,7 @@ import json
 import os
 import subprocess
 import sys
+import mini_games
 users = {
     
 }
@@ -328,19 +329,10 @@ def play_game_from_library(game_id, game_snapshot):
     elif game_id == "100007":
         pass
     elif game_id == "100021":
-        try:
-            # Launch Pokete
-            subprocess.run([sys.executable, "-m", "pokete"])
-            
-            # RESET TERMINAL after Pokete exits
-            os.system("reset")  # Clears curses state
-            print("\n🎮 Back to store!")
-            
-        except FileNotFoundError:
-            print("Installing pokete...")
-            subprocess.run([sys.executable, "-m", "pip", "install", "pokete"])
-            subprocess.run([sys.executable, "-m", "pokete"])
-            os.system("reset")
+        mini_games.play_pokete()
+
+    elif game_id == "100022":
+        mini_games.number_guessing()
     else:
         # Default minigame for all other games
         pass  # or random minigame

@@ -3,7 +3,7 @@
     "username": "asd",
     "email": "asd@gmail.com",
     "password": "123456",
-    "balance": 100.0,
+    "balance": 290.0,
     "cart": {},
     "library": [
       {
@@ -18,6 +18,27 @@
         "price": 100,
         "genre": "Souls"
       },
+      {
+        "game_id": "100021",
+        "title": "Pokete Pokemon",
+        "price": 50,
+        "genre": "RPG"
+      },
+      {
+        "game_id": "100022",
+        "title": "Number Guessing",
+        "price": 10,
+        "genre": "Puzzle"
+      }
+    ]
+  },
+  "ahmed": {
+    "username": "ahmed",
+    "email": "Ahmed@gmail.com",
+    "password": "123456",
+    "balance": 150.0,
+    "cart": {},
+    "library": [
       {
         "game_id": "100021",
         "title": "Pokete Pokemon",

@@ -1,10 +1,8 @@
-from game_store import models
+import models
 
 models.load_users()
 models.load_games()
 current_user = None
-print(models.users)
-print(models.games)
 
 def show_store_menu():
     

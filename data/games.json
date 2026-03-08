@@ -159,5 +159,13 @@
   "price": 50,
   "publisher": "lxgr-linux",
   "release_year": 2020
-}
+  },
+  "100022": {
+  "title": "Number Guessing",
+  "genre": "Puzzle", 
+  "price": 10,
+  "publisher": "Your Store",
+  "release_year": 2026
+  }
+
 }
