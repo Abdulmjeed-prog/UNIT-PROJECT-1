@@ -3,48 +3,18 @@
     "username": "asd",
     "email": "asd@gmail.com",
     "password": "123456",
-    "balance": 290.0,
+    "balance": 0,
     "cart": {},
-    "library": [
-      {
-        "game_id": "212151",
-        "title": "bloodborne",
-        "price": 200,
-        "genre": "Souls"
-      },
-      {
-        "game_id": "212122342",
-        "title": "bloodborne",
-        "price": 100,
-        "genre": "Souls"
-      },
-      {
-        "game_id": "100021",
-        "title": "Pokete Pokemon",
-        "price": 50,
-        "genre": "RPG"
-      },
-      {
-        "game_id": "100022",
-        "title": "Number Guessing",
-        "price": 10,
-        "genre": "Puzzle"
-      }
-    ]
+    "library": [],
+    "role": "user"
   },
-  "ahmed": {
-    "username": "ahmed",
-    "email": "Ahmed@gmail.com",
+  "admin": {
+    "username": "admin",
+    "email": "admin@gmail.com",
     "password": "123456",
-    "balance": 150.0,
+    "balance": 0,
     "cart": {},
-    "library": [
-      {
-        "game_id": "100021",
-        "title": "Pokete Pokemon",
-        "price": 50,
-        "genre": "RPG"
-      }
-    ]
+    "library": [],
+    "role": "admin"
   }
 }

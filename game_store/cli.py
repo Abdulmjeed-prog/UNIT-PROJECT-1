@@ -64,6 +64,54 @@ def show_store_menu():
         else:
             print("❌ Invalid option (1-6 only)")
 
+def show_admin_menu():
+    """Admin panel for store management"""
+    while True:
+        print("\n" + "="*50)
+        print("🔧 ADMIN PANEL")
+        print("="*50)
+        print("1. View All Users")
+        print("2. Add Game") 
+        print("3. Edit Game")
+        print("4. Delete Game")
+        print("5. View All Games")
+        print("6. View Sales Report")
+        print("7. Add Gift Card")
+        print("8. View User Balances")
+        print("9. Reset User Balance")
+        print("10. Logout")
+        print("-"*50)
+        try:
+            choice = int(input("Admin > "))
+        except ValueError:
+            print("❌ Enter a number!")
+            continue
+        
+        if choice == 1:
+            models.User.display_users()
+        elif choice == 2:
+            pass
+        elif choice == 3:
+            pass
+        elif choice == 4:
+            pass
+        elif choice == 5:
+            pass
+        elif choice == 6:
+            pass
+        elif choice == 7:
+            pass
+        elif choice == 8:
+            pass
+        elif choice == 9:
+            pass
+        elif choice == 10:
+            print("👋 Admin logged out")
+            break
+        else:
+            print("❌ Invalid option!")
+
+
 while True:
     print("\n" + "="*50)
     print("      🎮 VIDEO GAME STORE 🎮")
@@ -89,11 +137,17 @@ while True:
         username = input("Username: ").strip()
         password = input("Password: ").strip()
         logged_user = models.User.login(username, password)
-        if logged_user:
+        if logged_user.role == "user":
             current_user = logged_user
             print("🎮 Welcome to the store!")
             show_store_menu()  # ← GO TO STORE MENU!
             current_user = None  # Reset after logout
+        
+        elif logged_user.role == "admin":
+            current_user = logged_user
+            print(f"Welcom {current_user.username}")
+            show_admin_menu()
+            current_user = None
         else:
             print("❌ Login failed. Try again.")
             

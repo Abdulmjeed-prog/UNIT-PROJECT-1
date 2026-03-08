@@ -98,19 +98,51 @@ class Game:
 
 
 class User:
-    def __init__(self, username: str, email: str, password: str, balance:int = 0, cart=None, library=None):
-        self.username = username.lower()  # "Kg" → "kg" (case insensitive)
+    def __init__(self, username: str, email: str, password: str, balance:int = 0, cart=None, library=None, role="user"):
+        self.username = username.lower()
         self.email = email
         self.password = password
         self.__balance = balance
         self.cart = cart or {}
         self.library = library or []
+        self.role = role
     
     def set_balance(self, balance):
         self.__balance = balance
     
     def get_balance(self):
         return self.__balance
+    
+
+    @staticmethod
+    def display_users():
+        """Display all users for admin"""
+        if not users:
+            print("👥 No users registered yet!")
+            return
+        
+        print("\n👥 ALL USERS REPORT")
+        print("=" * 80)
+        print(f"{'ID':<4} {'USERNAME':<12} {'EMAIL':<25} {'BALANCE':<10} {'GAMES':<6} {'LAST LOGIN'}")
+        print("-" * 80)
+        
+        user_count = 0
+        total_balance = 0
+        
+        for username, data in users.items():
+            user_count += 1
+            balance = data.get('balance', 0)
+            library_count = len(data.get('library', []))
+            total_balance += balance
+            
+            print(f"{user_count:<4} {username.title():<12} {data['email']:<25} "
+                f"{balance:<10} SAR {library_count:<6} N/A")
+        
+        print("-" * 80)
+        print(f"TOTAL: {user_count} users | Total Balance: {total_balance} SAR")
+        print(f"Average Balance: {total_balance/user_count:.0f} SAR/user")
+
+
         
     def add_account(self):
     # 1. Check if user already exists
@@ -143,7 +175,8 @@ class User:
             "password": self.password,  # In production: hash this!
             "balance": 0,
             "cart": {},
-            "library": []
+            "library": [],
+            "role": "user"
         }
         
         print(f"✅ Account created successfully!")
@@ -169,7 +202,8 @@ class User:
                 password=password,
                 balance=user_data["balance"],
                 cart=user_data.get("cart", {}),      
-                library=user_data.get("library", [])
+                library=user_data.get("library", []),
+                role = user_data["role"]
 
             )
         else:
