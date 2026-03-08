@@ -1,5 +1,4 @@
-import models
-
+from game_store import models
 
 models.load_users()
 models.load_games()
@@ -16,7 +15,7 @@ def show_store_menu():
         print("\n" + "="*40)
         print(f"🛒 STORE MENU            {models.User.get_balance(current_user)}")
         print("="*40)
-        print("1. View Games")
+        print("1. View my library")
         print("2. Search Games")
         print("3. View Cart") 
         print("4. Add to Cart")
@@ -34,7 +33,8 @@ def show_store_menu():
         if choice == 1:
             print("📋 Listing all games...")
             # models.list_games()
-            models.Game.display_games(models.games)
+            #models.Game.display_games(models.games)
+            models.Game.display_library(current_user)
             
         elif choice == 2:
             print("🔍 Search games...")

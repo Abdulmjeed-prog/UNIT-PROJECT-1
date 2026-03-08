@@ -1,7 +1,8 @@
 from dataclasses import dataclass ,field
 import json
 import os
-
+import subprocess
+import sys
 users = {
     
 }
@@ -36,13 +37,12 @@ gift_cards = {
 
 
 class Game: 
-    def __init__(self, id: int, title: str, genre: str, price: float, stock: int, 
+    def __init__(self, id: int, title: str, genre: str, price: float, 
                  publisher: str, release_year: int):
         self.id = id           
         self.title = title
         self.genre = genre
         self.price = price
-        self.stock = stock
         self.publisher = publisher
         self.release_year = release_year
     
@@ -57,11 +57,35 @@ class Game:
         for num, game_id in enumerate(games, start=1):
             game = games[game_id]
             print(f"{num}. {game['title']} (ID: {game_id})")
-            print(f"   {game['genre']} | ${game['price']:,.2f} | Stock: {game['stock']}")
+            print(f"   {game['genre']} | ${game['price']:,.2f}")
             print(f"   {game['publisher']} - {game['release_year']}")
             print("-" * 70)
-
+            
+    def display_library(current_user):
+        """Display all games from dict"""
+        if not current_user.library:
+            print("No games available.")
+            return
     
+        print("\n📋 AVAILABLE GAMES:")
+        print("=" * 70)
+        for num, owned in enumerate(current_user.library, start=1):
+            print(f"{num}. {owned['title']} (ID: {owned["game_id"]})")
+            print(f"   {owned['genre']}")
+            print("-" * 70)
+        
+        # Game selection
+        try:
+            choice = int(input("\nEnter game number to PLAY (or 0 to cancel): "))
+            if 1 <= choice <= len(current_user.library):
+                selected_game = current_user.library[choice-1]
+                game_id = selected_game['game_id']
+                print(f"\n🎮 Launching: {selected_game['title']}...")
+                play_game_from_library(game_id,selected_game)
+            else:
+                print("Cancelled.")
+        except ValueError:
+            print("❌ Enter a number!")
 
     def save_game(games):
         """Save to JSON file."""
@@ -288,6 +312,40 @@ def delete_cart_file(username):
         print(f"🗑️ Deleted {cart_file}")
     else:
         print("📁 No cart file found")
+
+
+
+def play_game_from_library(game_id, game_snapshot):
+    """Launch minigame or specific game logic based on game_id"""
+    game_id = str(game_id)  # Normalize
+    
+    if game_id in ["100001", "212151"]:  # Elden Ring, Bloodborne
+        pass
+    
+    elif game_id == "100016":  # Minecraft
+        pass
+    
+    elif game_id == "100007":
+        pass
+    elif game_id == "100021":
+        try:
+            # Launch Pokete
+            subprocess.run([sys.executable, "-m", "pokete"])
+            
+            # RESET TERMINAL after Pokete exits
+            os.system("reset")  # Clears curses state
+            print("\n🎮 Back to store!")
+            
+        except FileNotFoundError:
+            print("Installing pokete...")
+            subprocess.run([sys.executable, "-m", "pip", "install", "pokete"])
+            subprocess.run([sys.executable, "-m", "pokete"])
+            os.system("reset")
+    else:
+        # Default minigame for all other games
+        pass  # or random minigame
+    
+    input("\nPress Enter to return to store...")
 
 
 

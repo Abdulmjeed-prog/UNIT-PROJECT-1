@@ -3,7 +3,6 @@
     "title": "bloodborne",
     "genre": "Souls",
     "price": 200,
-    "stock": 8.0,
     "publisher": "FromSoftware",
     "release_year": 2018
   },
@@ -11,8 +10,154 @@
     "title": "bloodborne",
     "genre": "Souls",
     "price": 100,
-    "stock": 8.0,
     "publisher": "FromSoftware",
     "release_year": 2018
-  }
+  },
+  "100001": {
+    "title": "Elden Ring",
+    "genre": "Souls",
+    "price": 250,
+    "publisher": "FromSoftware",
+    "release_year": 2022
+  },
+  "100002": {
+    "title": "Dark Souls III",
+    "genre": "Souls",
+    "price": 180,
+    "publisher": "FromSoftware",
+    "release_year": 2016
+  },
+  "100003": {
+    "title": "Sekiro: Shadows Die Twice",
+    "genre": "Action",
+    "price": 190,
+    "publisher": "FromSoftware",
+    "release_year": 2019
+  },
+  "100004": {
+    "title": "God of War",
+    "genre": "Action",
+    "price": 220,
+    "publisher": "Sony Santa Monica",
+    "release_year": 2018
+  },
+  "100005": {
+    "title": "Spider-Man",
+    "genre": "Action",
+    "price": 210,
+    "publisher": "Insomniac Games",
+    "release_year": 2018
+  },
+  "100006": {
+    "title": "Horizon Zero Dawn",
+    "genre": "RPG",
+    "price": 160,
+    "publisher": "Guerrilla Games",
+    "release_year": 2017
+  },
+  "100007": {
+    "title": "The Witcher 3",
+    "genre": "RPG",
+    "price": 140,
+    "publisher": "CD Projekt",
+    "release_year": 2015
+  },
+  "100008": {
+    "title": "Red Dead Redemption 2",
+    "genre": "Action",
+    "price": 230,
+    "publisher": "Rockstar Games",
+    "release_year": 2018
+  },
+  "100009": {
+    "title": "Grand Theft Auto V",
+    "genre": "Action",
+    "price": 130,
+    "publisher": "Rockstar Games",
+    "release_year": 2013
+  },
+  "100010": {
+    "title": "Cyberpunk 2077",
+    "genre": "RPG",
+    "price": 170,
+    "publisher": "CD Projekt",
+    "release_year": 2020
+  },
+  "100011": {
+    "title": "Resident Evil 2",
+    "genre": "Horror",
+    "price": 150,
+    "publisher": "Capcom",
+    "release_year": 2019
+  },
+  "100012": {
+    "title": "Resident Evil 4",
+    "genre": "Horror",
+    "price": 180,
+    "publisher": "Capcom",
+    "release_year": 2023
+  },
+  "100013": {
+    "title": "Monster Hunter: World",
+    "genre": "Action",
+    "price": 140,
+    "publisher": "Capcom",
+    "release_year": 2018
+  },
+  "100014": {
+    "title": "FIFA 24",
+    "genre": "Sports",
+    "price": 200,
+    "publisher": "EA Sports",
+    "release_year": 2023
+  },
+  "100015": {
+    "title": "NBA 2K24",
+    "genre": "Sports",
+    "price": 190,
+    "publisher": "2K Sports",
+    "release_year": 2023
+  },
+  "100016": {
+    "title": "Minecraft",
+    "genre": "Sandbox",
+    "price": 120,
+    "publisher": "Mojang",
+    "release_year": 2011
+  },
+  "100017": {
+    "title": "Fortnite",
+    "genre": "Battle Royale",
+    "price": 0,
+    "publisher": "Epic Games",
+    "release_year": 2017
+  },
+  "100018": {
+    "title": "Call of Duty: Modern Warfare II",
+    "genre": "Shooter",
+    "price": 220,
+    "publisher": "Activision",
+    "release_year": 2022
+  },
+  "100019": {
+    "title": "Overwatch 2",
+    "genre": "Shooter",
+    "price": 0,
+    "publisher": "Blizzard",
+    "release_year": 2022
+  },
+  "100020": {
+    "title": "Assassin's Creed Valhalla",
+    "genre": "Action",
+    "price": 170,
+    "publisher": "Ubisoft",
+    "release_year": 2020
+  },
+  "100021": {
+  "title": "Pokete Pokemon",
+  "genre": "RPG",
+  "price": 50,
+  "publisher": "lxgr-linux",
+  "release_year": 2020
+}
 }
