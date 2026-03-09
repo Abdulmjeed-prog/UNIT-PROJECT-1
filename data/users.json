@@ -3,9 +3,16 @@
     "username": "asd",
     "email": "asd@gmail.com",
     "password": "123456",
-    "balance": 0,
+    "balance": 590.0,
     "cart": {},
-    "library": [],
+    "library": [
+      {
+        "game_id": "100022",
+        "title": "Number Guessing",
+        "price": 10,
+        "genre": "Puzzle"
+      }
+    ],
     "role": "user"
   },
   "admin": {

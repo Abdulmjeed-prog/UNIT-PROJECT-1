@@ -2,6 +2,7 @@ import models
 
 models.load_users()
 models.load_games()
+models.load_giftcards()
 current_user = None
 
 def show_store_menu():
@@ -75,11 +76,9 @@ def show_admin_menu():
         print("3. Edit Game")
         print("4. Delete Game")
         print("5. View All Games")
-        print("6. View Sales Report")
-        print("7. Add Gift Card")
-        print("8. View User Balances")
-        print("9. Reset User Balance")
-        print("10. Logout")
+        print("6. Add Gift Card")
+        print("7. View All Gift Cards")
+        print("8. Logout")
         print("-"*50)
         try:
             choice = int(input("Admin > "))
@@ -92,15 +91,22 @@ def show_admin_menu():
         elif choice == 2:
             pass
         elif choice == 3:
-            pass
+            models.Game.display_games(models.games)
+            game_id = input("Enter the ID of the Game: ")
+
+            models.Game.update_game(game_id)
+
         elif choice == 4:
-            pass
+            models.Game.display_games(models.games)
+            game_id = input("Enter the ID of the Game: ")
+            models.Game.delete_game(game_id)
         elif choice == 5:
             pass
         elif choice == 6:
-            pass
+            giftcard = input("Enter Gift Card: ")
+            models.User.add_gift_card(giftcard)
         elif choice == 7:
-            pass
+            models.User.display_gift_cards()
         elif choice == 8:
             pass
         elif choice == 9:
@@ -137,6 +143,7 @@ while True:
         username = input("Username: ").strip()
         password = input("Password: ").strip()
         logged_user = models.User.login(username, password)
+        
         if logged_user.role == "user":
             current_user = logged_user
             print("🎮 Welcome to the store!")

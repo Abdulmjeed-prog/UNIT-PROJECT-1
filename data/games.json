@@ -146,26 +146,11 @@
     "publisher": "Blizzard",
     "release_year": 2022
   },
-  "100020": {
-    "title": "Assassin's Creed Valhalla",
-    "genre": "Action",
-    "price": 170,
-    "publisher": "Ubisoft",
-    "release_year": 2020
-  },
   "100021": {
-  "title": "Pokete Pokemon",
-  "genre": "RPG",
-  "price": 50,
-  "publisher": "lxgr-linux",
-  "release_year": 2020
-  },
-  "100022": {
-  "title": "Number Guessing",
-  "genre": "Puzzle", 
-  "price": 10,
-  "publisher": "Your Store",
-  "release_year": 2026
+    "title": "Pokete Pokemon",
+    "genre": "RPG",
+    "price": 50,
+    "publisher": "lxgr-linux",
+    "release_year": 2020
   }
-
 }
