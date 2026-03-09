@@ -41,10 +41,10 @@
   },
   "100026": {
     "title": "Number Guessing",
-    "genre": "Guessing",
-    "price": 8,
+    "genre": "Puzzle",
+    "price": 20,
     "publisher": "Perplexity Games",
     "release_year": 2026,
-    "minigame": "guessing"
+    "minigame": "Guessing"
   }
 }

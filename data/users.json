@@ -3,7 +3,7 @@
     "username": "asd",
     "email": "asd@gmail.com",
     "password": "123456",
-    "balance": 190.0,
+    "balance": 112.0,
     "cart": {},
     "library": [
       {
@@ -11,8 +11,35 @@
         "title": "Rock Paper Scissors",
         "price": 10,
         "genre": "Casual"
+      },
+      {
+        "game_id": "100026",
+        "title": "Number Guessing",
+        "price": 8,
+        "genre": "Guessing"
+      },
+      {
+        "game_id": "100025",
+        "title": "Hangman Classic",
+        "price": 12,
+        "genre": "Word"
+      },
+      {
+        "game_id": "100021",
+        "title": "Pokete Pokemon",
+        "price": 50,
+        "genre": "RPG"
       }
     ],
     "role": "user"
+  },
+  "admin": {
+    "username": "admin",
+    "email": "admin@gmail.com",
+    "password": "123456",
+    "balance": 0,
+    "cart": {},
+    "library":[],
+    "role": "admin"
   }
 }
