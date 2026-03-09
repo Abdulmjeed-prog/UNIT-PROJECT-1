@@ -1,8 +1,6 @@
 from dataclasses import dataclass ,field
 import json
 import os
-import subprocess
-import sys
 import mini_games
 users = {
     
@@ -13,27 +11,7 @@ games = {
 }
 
 gift_cards = {
-    "ABCD-EFGH-IJKL-MNOP": {  # 20 chars + dashes (exact PSN format)
-        "amount": 100.0,
-        "currency": "SAR",
-        "is_used": False,
-        "assigned_to": None,
-        "code": "ABCD-EFGH-IJKL-MNOP"
-    },
-    "WXYZ-1234-5678-9ABC": {
-        "amount": 50.0, 
-        "currency": "SAR",
-        "is_used": False,
-        "assigned_to": None,
-        "code": "WXYZ-1234-5678-9ABC"
-    },
-    "PSN4-QRST-UVWX-YZ12": {
-        "amount": 200.0,
-        "currency": "SAR", 
-        "is_used": False,
-        "assigned_to": None,
-        "code": "PSN4-QRST-UVWX-YZ12"
-    }
+
 }
 
 
@@ -46,7 +24,8 @@ class Game:
         self.price = price
         self.publisher = publisher
         self.release_year = release_year
-    
+
+    @staticmethod
     def display_games(games):
         """Display all games from dict"""
         if not games:
@@ -58,10 +37,11 @@ class Game:
         for num, game_id in enumerate(games, start=1):
             game = games[game_id]
             print(f"{num}. {game['title']} (ID: {game_id})")
-            print(f"   {game['genre']} | ${game['price']:,.2f}")
+            print(f"   {game['genre']} | {game['price']:,.2f} SAR")
             print(f"   {game['publisher']} - {game['release_year']}")
             print("-" * 70)
-            
+
+    @staticmethod 
     def display_library(current_user):
         """Display all games from dict"""
         if not current_user.library:
@@ -71,7 +51,7 @@ class Game:
         print("\n📋 AVAILABLE GAMES:")
         print("=" * 70)
         for num, owned in enumerate(current_user.library, start=1):
-            print(f"{num}. {owned['title']} (ID: {owned["game_id"]})")
+            print(f"{num}. {owned['title']} (ID: {owned['game_id']})")  
             print(f"   {owned['genre']}")
             print("-" * 70)
         
@@ -87,7 +67,7 @@ class Game:
                 print("Cancelled.")
         except ValueError:
             print("❌ Enter a number!")
-
+    @staticmethod
     def update_game(game_id: str):
         """Admin: update a game's info with validation."""
         if game_id not in games:
@@ -155,6 +135,7 @@ class Game:
         Game.save_game(games)
         print("✅ Game updated successfully!")
 
+    @staticmethod
     def delete_game(game_id):
         """Delete game from store with confirmation."""
         if game_id not in games:
@@ -174,7 +155,7 @@ class Game:
         else:
             print("❌ Deletion cancelled.")
 
-
+    @staticmethod
     def save_game(games):
         """Save to JSON file."""
         with open('data/games.json', 'w', encoding='utf-8') as f:
@@ -210,7 +191,7 @@ class User:
         
         print("\n👥 ALL USERS REPORT")
         print("=" * 80)
-        print(f"{'ID':<4} {'USERNAME':<12} {'EMAIL':<25} {'BALANCE':<10} {'GAMES':<6} {'LAST LOGIN'}")
+        print(f"{'ID':<4} {'USERNAME':<12} {'EMAIL':<25} {'BALANCE':<10} {'GAMES':<6}")
         print("-" * 80)
         
         user_count = 0
@@ -223,11 +204,38 @@ class User:
             total_balance += balance
             
             print(f"{user_count:<4} {username.title():<12} {data['email']:<25} "
-                f"{balance:<10} SAR {library_count:<6} N/A")
+                f"{balance:<10} {library_count:<6}")
         
         print("-" * 80)
         print(f"TOTAL: {user_count} users | Total Balance: {total_balance} SAR")
         print(f"Average Balance: {total_balance/user_count:.0f} SAR/user")
+    
+    def add_to_cart(current_user, game_id: str):
+        """Add a game to the current user's cart by game_id."""
+        game_id = str(game_id).strip()
+
+        # 1) Validate game exists
+        if game_id not in games:
+            print("❌ Invalid game ID.")
+            return
+
+        game = games[game_id]
+
+        # 2) Make sure user has a cart dict
+        if current_user.cart is None:
+            current_user.cart = {}
+
+        # 3) Prevent duplicates
+        if game_id in current_user.cart:
+            print(f"⚠️ '{game['title']}' is already in your cart.")
+            return
+
+        # 4) Add with default quantity = 1
+        current_user.cart[game_id] = 1
+
+        # 5) Feedback
+        print(f"✅ Added '{game['title']}' to your cart.")
+        print(f"   🛒 Cart now has {len(current_user.cart)} items.")
 
 
         
@@ -361,7 +369,7 @@ class User:
         }
         
         save_giftcard(gift_cards)
-        print(f"✅ '{giftcard_code}' added (${amount} SAR)!")
+        print(f"✅ '{giftcard_code}' added ({amount} SAR)!")
     
 
     def display_gift_cards():
@@ -401,12 +409,14 @@ class User:
             print("Cart is empty!")
             return
         total = 0
-        for game_id, quantity in current_user.cart.items():  # ← .items() FIX!
+
+        for game_id in current_user.cart.keys():  # Simple keys only
             game = games[game_id]
-            print(f"{quantity}x {game['title']} (ID: {game_id})")
-            print(f"  Price: ${game['price']}")
-            total += int(game['price'])
-        print(f"\n💰 Total: {total} SAR")
+            print(f"{game['title']} (ID: {game_id})")  # Clean "Game Title (ID: 1001)"
+            print(f"  Price: {game['price']} SAR")
+            total += float(game['price'])  # Use float, not int
+        print(f"\n💰 Total: {total:.2f} SAR")
+
         return total
 
     def checkout(current_user, balance, total):
@@ -464,7 +474,7 @@ class User:
 
 
 
-@staticmethod
+
 def load_games():
     global games
     if os.path.exists('data/games.json'):
@@ -475,7 +485,7 @@ def load_games():
         except Exception as e:
             print(f"❌ Load error: {e}")
 
-@staticmethod
+
 def load_users():
     global users
     if os.path.exists('data/users.json'):
@@ -496,7 +506,7 @@ def load_giftcards():
         except Exception as e:
             print(f"❌ Load error: {e}")
 
-@staticmethod
+
 def load_user_cart(username: str) -> dict:
     """Load user's cart from JSON"""
     cart_file = f'data/{username}_cart.json'
@@ -525,24 +535,24 @@ def play_game_from_library(game_id, game_snapshot):
     """Launch minigame or specific game logic based on game_id"""
     game_id = str(game_id)  # Normalize
     
-    if game_id in ["100001", "212151"]:  # Elden Ring, Bloodborne
-        pass
-    
-    elif game_id == "100016":  # Minecraft
-        pass
-    
-    elif game_id == "100007":
-        pass
-    elif game_id == "100021":
-        mini_games.play_pokete()
 
+    if game_id == "100021":
+        mini_games.play_pokete()
     elif game_id == "100022":
+        mini_games.rock_paper_scissors()
+    elif game_id == "100023":
+        mini_games.tic_tac_toe()
+    elif game_id == "100024":
+        mini_games.number_quiz()
+    elif game_id == "100025":
+        mini_games.hangman()
+    elif game_id == "100026":
         mini_games.number_guessing()
     else:
-        # Default minigame for all other games
-        pass  # or random minigame
+        pass
     
     input("\nPress Enter to return to store...")
+
 
 def save_giftcard(gift_cards):
     os.makedirs("data", exist_ok=True)  # Creates folder if missing!

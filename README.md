@@ -1,44 +1,53 @@
-# UNIT-PROJECT-1
+# Project: Video Game Store CLI
 
+## Overview
+This is a command-line interface (CLI) application for a Digital Video Game Store. The system allows users to browse and purchase games using a wallet system fueled by gift cards. Once purchased, games are added to a user's library where they can actually be launched and played.
 
-## Based on what you’ve learned until now , create a project of your choosing (impress us with your imagination) . This project must at least satisfy the following minimum requirements :
+The project uses persistent JSON storage to manage users, games, and gift cards, ensuring data is saved between sessions.
 
-- Must be interactive on CLI.
-- Use your coding skills in Python accurately.
-- Organize Your Code into modules & (or packages)
-- Use git & Github to track changes in your code.
+---
 
-## Example Project :  An online Grocery Store :
+## Features & User Stories
 
-#### Overview : An online store that sells fruits to customers. This online store has 2 main users. The customer and the manager of the store . Each one of them should be able to do the following tasks for the store to function properly . 
+### As a Customer (User), I should be able to:
+* **Register & Login:** Create a unique account and access it securely.
+* **Browse Games:** View a list of all available games including their genre, price, and publisher.
+* **Manage Cart:** Add games to a shopping cart by their ID and view the total price.
+* **Wallet Management:** Redeem gift cards to increase my account balance (SAR).
+* **Purchase:** Checkout my cart to move games from the store into my personal library.
+* **Play Games:** Launch mini-games (like Tic-Tac-Toe, Hangman, etc.) directly from my library.
 
-### Features & User Stories
-#### As a customer I should be able to do the following :
-- Browse  Products . 
-- View the product info (summary, specs, price, quantity , etc.)
-- Search for Products.
-- Get recommendations for my next purchase based on my purchase history.
-- Add Products to the shopping cart .
-- Remove a product from the shopping cart.
-- List the products in my shopping cart. 
-- Continue to checkout . 
-- Fill in my address for delivery.
-- Get receipt of my purchases.
-- Check delivery status . 
+### As an Admin, I should be able to:
+* **User Oversight:** View a full report of all registered users, their emails, and balances.
+* **Inventory Management:** Edit existing game details or delete games from the store.
+* **Gift Card Control:** Create new gift cards with specific SAR amounts and monitor which cards have been redeemed and by whom.
 
+---
 
+## Usage
 
-#### Usage :
- Explain to the user how to use your project . 
- for example:
- - type in search product_name to search for a product.
- - type in list_products to show all the products in the grocery.
- - type in show product_name to get information about this product.
- - type in buy product_name to buy the product . 
- - and so on...
+Run the main script to start the application. Use the numeric keyboard to navigate the menus.
 
+### 1. Account Setup
+- **Register:** Follow the prompts to enter a username, email, and password.
+- **Login:** Enter your credentials. The system will recognize if you are a standard **User** or an **Admin**.
 
-### For your project. Edit this README.md file to include your own project name,  overview, user stories, and usage. 
+### 2. User Commands (Store Menu)
+- **View my library:** Type `1` to see your games. Enter the game number to **Play**.
+- **Add to Cart:** Type `3`, then enter the **Game ID** (e.g., `100021`) to add it to your cart.
+- **Checkout:** Type `4` to pay for your cart items using your balance.
+- **Redeem Gift Card:** Type `5` and enter your code to add funds.
 
-### NOTE: before submitting the final project, please do the following command:
-`pip freeze > requirements.txt` to enable use to know & use the packages used in your project.
+### 3. Admin Commands (Admin Panel)
+- **Edit/Delete Game:** Type `2` or `3` and provide the **Game ID** to modify the store inventory.
+- **Add Gift Card:** Type `5` to generate a new code and set its value.
+- **View Reports:** Type `1` for a user report or `6` for a gift card status report.
+
+---
+
+## Data Management
+The project automatically creates a `data/` directory to store the following:
+- `users.json`: Stores user profiles and credentials.
+- `games.json`: Stores the catalog of games.
+- `giftcard.json`: Tracks all valid and used gift card codes.
+- `{username}_cart.json`: Temporary storage for user shopping carts.

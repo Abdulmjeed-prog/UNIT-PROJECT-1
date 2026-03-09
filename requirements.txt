@@ -1,0 +1,3 @@
+colorama==0.4.6
+pokete==0.10.0rc4
+scrap_engine==1.5.1

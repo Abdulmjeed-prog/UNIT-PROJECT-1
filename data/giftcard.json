@@ -10,21 +10,21 @@
     "amount": 50.0,
     "currency": "SAR",
     "is_used": false,
-    "assigned_to": null,
+    "assigned_to": "ahmed",
     "code": "WXYZ-1234-5678-9ABC"
   },
   "PSN4-QRST-UVWX-YZ12": {
     "amount": 200.0,
     "currency": "SAR",
     "is_used": false,
-    "assigned_to": null,
+    "assigned_to": "asd",
     "code": "PSN4-QRST-UVWX-YZ12"
   },
   "asvv-assv-asvs-svsa": {
     "amount": 200.0,
     "currency": "SAR",
-    "is_used": true,
-    "assigned_to": "asd",
+    "is_used": false,
+    "assigned_to": "abdulmjeed",
     "code": "asvv-assv-asvs-svsa"
   }
 }
